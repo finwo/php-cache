@@ -1,5 +1,6 @@
 {
     "name": "finwo/cache",
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Robin Bron",
@@ -9,7 +10,12 @@
     "autoload": {
         "psr-4": { "Finwo\\Cache\\": "src" }
     },
+    "repositories": [{
+        "type": "vcs",
+        "url": "git@github.com:finwo/data-tools-php.git"
+    }],
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.3",
+        "finwo/data-tools": "*@dev"
     }
 }
