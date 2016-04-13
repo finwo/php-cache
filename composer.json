@@ -1,0 +1,15 @@
+{
+    "name": "finwo/cache",
+    "authors": [
+        {
+            "name": "Robin Bron",
+            "email": "robin@finwo.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Finwo\\Cache\\": "src" }
+    },
+    "require": {
+        "php": ">=5.3"
+    }
+}
