@@ -22,7 +22,7 @@ class Cache implements CacheInterface
         'memcached' => 'Finwo\\Cache\\Memcached'
     );
 
-    public static function init( $type = 'detect' )
+    public static function init( $type = 'detect', $options = array())
     {
         $class = self::class;
 
@@ -42,7 +42,7 @@ class Cache implements CacheInterface
             $class = self::$typeDetect[$type];
         }
 
-        return new $class();
+        return new $class($options);
     }
 
     /**
