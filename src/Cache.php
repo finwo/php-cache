@@ -54,7 +54,7 @@ class Cache implements CacheInterface
     {
         // if we don't have it's cache, don't try to
         if (!isset($this->localCache[$key])) {
-            return null;
+            return false;
         }
 
         // easy-access to the data
@@ -74,7 +74,7 @@ class Cache implements CacheInterface
         $data['lock'] = $t + ($ttl / 4);
 
         // indicate the callee needs to refresh the cache
-        return null;
+        return false;
     }
 
     /**
