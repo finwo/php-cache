@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b9fa8a5f8f0887caca36f4a5c6e19aa9",
-    "content-hash": "1d3fe2df2ba4fb3612e6498965ee9ed2",
+    "hash": "415c02938f01e9e4ccaf06a2b5bd3d47",
+    "content-hash": "85fc164c82c23c1ebd4269e9e3efc9e8",
     "packages": [
         {
             "name": "finwo/data-tools",
