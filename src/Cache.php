@@ -22,6 +22,12 @@ class Cache implements CacheInterface
         'memcached' => 'Finwo\\Cache\\Memcached'
     );
 
+    /**
+     * @param string $type
+     * @param array  $options
+     *
+     * @return CacheInterface
+     */
     public static function init( $type = 'detect', $options = array())
     {
         // We know ourselves, no need to be fancy about it
@@ -32,7 +38,12 @@ class Cache implements CacheInterface
             // Check if any of the known implementations exist
             foreach (self::$typeDetect as $test) {
                 if (class_exists($test)) {
-                    $class = $test;
+
+                    $testObject = new $test($options);
+                    if ($testObject instanceof CacheInterface) {
+                        return $testObject;
+                    }
+
                     break;
                 }
             }
