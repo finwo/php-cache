@@ -24,7 +24,8 @@ class Cache implements CacheInterface
 
     public static function init( $type = 'detect', $options = array())
     {
-        $class = self::class;
+        // We know ourselves, no need to be fancy about it
+        $class = 'Finwo\\Cache\\Cache';
 
         if ($type == 'detect') {
 
