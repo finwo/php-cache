@@ -2,8 +2,6 @@
 
 namespace Finwo\Cache;
 
-use Finwo\Datatools\ArrayQuery;
-
 class Cache implements CacheInterface
 {
     /**
