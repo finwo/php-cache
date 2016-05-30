@@ -102,4 +102,69 @@ class Cache implements CacheInterface
 
         return $this;
     }
+
+    /**
+     * Simple implementation of function caching
+     */
+    public function func($callable, $arguments = null, $ttl = 30)
+    {
+        // Validate callable
+        if (!is_callable($callable)) {
+            return null;
+        }
+
+        // Build hash
+        $hash = $this->hashVar($callable) . $this->hashVar($arguments);
+
+        // The easy part
+        if ( $result = $this->fetch($hash, $ttl) ) {
+            return $result;
+        }
+
+        // Generate & store
+        $this->store($hash, $result = call_user_func_array($callable, $arguments), $ttl);
+
+        return $result;
+    }
+
+    /**
+     * Hash variable
+     */
+    protected function hashVar( $variable, $algo = 'md5' )
+    {
+        // Try the obvious
+        if (is_string($variable)) {
+            return hash($algo, $variable);
+        }
+
+        // Try serialized version
+        try {
+            return hash($algo, serialize($variable));
+        } catch (\Exception $e) {
+            // Do nothing, we haven't exactly crashed yet
+        }
+
+        // Try json encoded version
+        try {
+            return hash($algo, json_encode($variable));
+        } catch (\Exception $e) {
+            // Do nothing, we haven't exactly crashed yet
+        }
+
+        // Try var_export version
+        try {
+            return hash($algo, var_export($variable, true));
+        } catch (\Exception $e) {
+            // Do nothing, we haven't exactly crashed yet
+        }
+
+        // Try print_r version
+        try {
+            return hash($algo, print_r($variable, true));
+        } catch (\Exception $e) {
+            // Do nothing, we haven't exactly crashed yet
+        }
+
+        return null;
+    }
 }
