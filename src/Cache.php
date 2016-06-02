@@ -105,6 +105,8 @@ class Cache implements CacheInterface
 
     /**
      * Simple implementation of function caching
+     *
+     * {@inheritdoc}
      */
     public function func($callable, $arguments = null, $ttl = 30)
     {
