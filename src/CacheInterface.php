@@ -29,4 +29,11 @@ interface CacheInterface
      * @return mixed
      */
     public function func($callable, $arguments = null, $ttl = 30);
+
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function request($key);
 }

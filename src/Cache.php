@@ -130,6 +130,46 @@ class Cache implements CacheInterface
     }
 
     /**
+     * Caches the current request
+     * Meant for usage in pure php, not for frameworks like symfony
+     * You should not call this before authentication
+     *
+     * {@inheritdoc}
+     */
+    public function request($hash, $ttl = 30)
+    {
+        // Use cache if possible
+        if ($result = $this->fetch($hash, $ttl)) {
+            $result = unserialize($result);
+            http_response_code($result['code']);
+            foreach ($result['headers'] as $value) {
+                header($value);
+            }
+            header('X-Cache: HIT');
+            die($result['body']);
+        }
+
+        // Notify we've missed the cache
+        header('X-Cache: MISS');
+
+        // Create an alias, because you can't reference $this
+        $cache = $this;
+
+        // Register function on shutdown, to store data
+        ob_start(function($buffer) use ($hash, $cache, $ttl) {
+
+            $cache->store($hash, array(
+                'code'    => http_response_code(),
+                'headers' => headers_list(),
+                'body'    => $buffer,
+            ), $ttl);
+
+            // Do not change the data
+            return $buffer;
+        });
+    }
+
+    /**
      * Hash variable
      */
     protected function hashVar( $variable, $algo = 'md5' )
