@@ -158,11 +158,14 @@ class Cache implements CacheInterface
         // Register function on shutdown, to store data
         ob_start(function($buffer) use ($hash, $cache, $ttl) {
 
-            $cache->store($hash, serialize(array(
-                'code'    => http_response_code(),
-                'headers' => headers_list(),
-                'body'    => $buffer,
-            )), $ttl);
+            $code = http_response_code();
+            if ($code >= 200 && $code < 400) {
+                $cache->store($hash, serialize(array(
+                    'code'    => http_response_code(),
+                    'headers' => headers_list(),
+                    'body'    => $buffer,
+                )), $ttl);
+            }
 
             // Do not change the data
             return $buffer;

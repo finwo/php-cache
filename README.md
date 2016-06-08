@@ -1,6 +1,9 @@
 # finwo / cache
 
 [![Build Status](https://travis-ci.org/finwo/php-cache.svg?branch=master)](https://travis-ci.org/finwo/php-cache)
+
+-----
+
 Simple cache foundation for PHP
 
 -----
