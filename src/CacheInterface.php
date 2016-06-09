@@ -32,8 +32,9 @@ interface CacheInterface
 
     /**
      * @param string $key
+     * @param int    $ttl
      *
      * @return mixed
      */
-    public function request($key);
+    public function request($key, $ttl = 30);
 }
