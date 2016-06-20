@@ -33,7 +33,12 @@ class Cache implements CacheInterface
             // Switch based upon used framework
             switch(get_class($value)) {
                 case 'Klein\\Klein':
-                    return $value->response()->code($newValue);
+                    $response = $value->response();
+                    // Make sure we have a response
+                    if (!$response) {
+                        break;
+                    }
+                    return $response->code($newValue);
             }
         }
 
