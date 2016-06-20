@@ -18,6 +18,8 @@ The develop branch is merged periodically into the master after confirming it's 
 -----
 
 ### Changelog
+- 2016-06-20
+    - Replaced http_status_code by compatibility implementation
 - 2016-06-08
     - Created README
     - Added unit tests
