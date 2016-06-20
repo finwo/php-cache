@@ -5,6 +5,46 @@ namespace Finwo\Cache;
 class Cache implements CacheInterface
 {
     /**
+     * @var integer
+     */
+    protected $responseCode = 200;
+
+    /**
+     * @param integer $newValue
+     *
+     * @return int
+     */
+    public function responseCode( $newValue = null ) {
+        // Try to work with http_response_code
+        if (function_exists('http_response_code')) {
+            if (!is_null($newValue)) {
+                return http_response_code($newValue);
+            }
+            return http_response_code();
+        }
+
+        // Try to be compatible with klein.php
+        foreach ($GLOBALS as $name => $value) {
+            // Nope, we are searching for objects
+            if (!is_object($value)) {
+                continue;
+            }
+
+            // Try to be compatible with some routers / frameworks
+            switch(get_class($value)) {
+                case 'Klein\\Klein':
+                    return $value->response()->code($newValue);
+            }
+        }
+
+        // We're hopeless now, define our own version
+        if (!is_null($newValue)) {
+            $this->responseCode = $newValue;
+        }
+        return $this->responseCode;
+    }
+
+    /**
      * Simple local cache implementation
      *
      * @var array
@@ -141,7 +181,7 @@ class Cache implements CacheInterface
         // Use cache if possible
         if ($result = $this->fetch($hash, $ttl)) {
             $result = \unserialize($result);
-            \http_response_code($result['code']);
+            $this->responseCode($result['code']);
             foreach ($result['headers'] as $value) {
                 \header($value);
             }
@@ -158,10 +198,10 @@ class Cache implements CacheInterface
         // Register function on shutdown, to store data
         \ob_start(function($buffer) use ($hash, $cache, $ttl) {
 
-            $code = \http_response_code();
+            $code = $this->responseCode();
             if ($code >= 200 && $code < 400) {
                 $cache->store($hash, \serialize(array(
-                    'code'    => \http_response_code(),
+                    'code'    => $code,
                     'headers' => \headers_list(),
                     'body'    => $buffer,
                 )), $ttl);
