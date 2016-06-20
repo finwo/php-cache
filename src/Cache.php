@@ -23,14 +23,14 @@ class Cache implements CacheInterface
             return http_response_code();
         }
 
-        // Try to be compatible with klein.php
+        // Try to be compatible with some routers / frameworks
         foreach ($GLOBALS as $name => $value) {
             // Nope, we are searching for objects
             if (!is_object($value)) {
                 continue;
             }
 
-            // Try to be compatible with some routers / frameworks
+            // Switch based upon used framework
             switch(get_class($value)) {
                 case 'Klein\\Klein':
                     return $value->response()->code($newValue);
