@@ -37,4 +37,9 @@ interface CacheInterface
      * @return mixed
      */
     public function request($key, $ttl = 30);
+
+    /**
+     * @return boolean
+     */
+    public function supported();
 }

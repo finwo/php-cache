@@ -62,7 +62,8 @@ class Cache implements CacheInterface
      * @var array
      */
     private static $typeDetect = array(
-        'memcached' => 'Finwo\\Cache\\Memcached'
+        'memcached'       => 'Finwo\\Cache\\Memcached',
+        'volatilestorage' => 'Finwo\\Cache\\VolatileStorage',
     );
 
     /**
@@ -81,13 +82,10 @@ class Cache implements CacheInterface
             // Check if any of the known implementations exist
             foreach (self::$typeDetect as $test) {
                 if (\class_exists($test)) {
-
                     $testObject = new $test($options);
-                    if ($testObject instanceof CacheInterface) {
+                    if ( $testObject instanceof CacheInterface && $testObject->supported() ) {
                         return $testObject;
                     }
-
-                    break;
                 }
             }
 
