@@ -255,4 +255,12 @@ class Cache implements CacheInterface
 
         return null;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supported()
+    {
+        return true;
+    }
 }
